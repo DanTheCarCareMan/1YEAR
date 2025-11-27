@@ -1,0 +1,742 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Our First Year Together 🤍</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!-- Google Font for handwritten effect -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Shadows+Into+Light&family=Quicksand:wght@300;400;600&display=swap"
+        rel="stylesheet">
+
+    <style>
+        :root {
+            --bg-paper: #f8f1e7;
+            --accent: #e6a4b4;
+            --accent-dark: #c9788c;
+            --text-main: #463532;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        [hidden] {
+            display: none !important;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background:
+                repeating-linear-gradient(135deg,
+                    #fdf7f0 0,
+                    #fdf7f0 12px,
+                    #f9efe2 12px,
+                    #f9efe2 24px);
+            font-family: "Quicksand", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+            color: var(--text-main);
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 960px;
+            width: 100%;
+            background: var(--bg-paper);
+            box-shadow: 0 18px 35px rgba(0, 0, 0, 0.18);
+            border-radius: 24px;
+            padding: 24px 20px 28px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Washi tape effect at corners */
+        .tape {
+            position: absolute;
+            width: 120px;
+            height: 26px;
+            background: rgba(255, 255, 255, 0.7);
+            border-radius: 6px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.12);
+            backdrop-filter: blur(1px);
+            z-index: 2;
+        }
+
+        .tape.top-left {
+            top: 10px;
+            left: 40px;
+            transform: rotate(-9deg);
+        }
+
+        .tape.top-right {
+            top: 12px;
+            right: 40px;
+            transform: rotate(7deg);
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        header h1 {
+            font-family: "Shadows Into Light", cursive;
+            font-size: 2.4rem;
+            letter-spacing: 0.04em;
+            margin-bottom: 4px;
+        }
+
+        header p {
+            font-size: 0.98rem;
+            opacity: 0.82;
+        }
+
+        .scrapbook {
+            margin-top: 16px;
+            display: grid;
+            grid-template-columns: minmax(0, 2fr);
+            justify-content: center;
+            justify-items: center;
+        }
+
+        .slide-wrapper {
+            position: relative;
+            width: 100%;
+            max-width: 720px;
+            padding: 22px 16px 8px;
+        }
+
+        /* Slides */
+
+        .slide {
+            position: absolute;
+            inset: 0;
+            opacity: 0;
+            transform: translateX(12px);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+            pointer-events: none;
+            /* slides never catch clicks */
+            z-index: 1;
+        }
+
+        .slide.active {
+            opacity: 1;
+            transform: translateX(0);
+            /* IMPORTANT: do NOT re-enable pointer-events here */
+            /* no pointer-events line here */
+        }
+
+        .polaroid {
+            background: #fcfbf7;
+            border-radius: 18px;
+            padding: 14px 14px 18px;
+            box-shadow:
+                0 12px 22px rgba(0, 0, 0, 0.18),
+                0 0 0 1px rgba(0, 0, 0, 0.08);
+            position: relative;
+            max-width: 650px;
+            margin: 0 auto;
+            transform: rotate(-1.5deg);
+        }
+
+        .polaroid::before {
+            content: "";
+            position: absolute;
+            width: 70px;
+            height: 18px;
+            background: rgba(255, 255, 255, 0.7);
+            top: -10px;
+            left: 30%;
+            transform: rotate(-7deg);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.14);
+            border-radius: 4px;
+        }
+
+        .polaroid-inner {
+            background: #fffdf8;
+            border-radius: 12px;
+            padding: 10px 10px 14px;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .photo-frame {
+            background: #eae3d6;
+            border-radius: 12px;
+            overflow: hidden;
+            margin-bottom: 10px;
+            max-height: 360px;
+        }
+
+        .photo-frame img {
+            width: 100%;
+            display: block;
+            object-fit: cover;
+        }
+
+        .slide-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-bottom: 5px;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .slide-title {
+            font-family: "Shadows Into Light", cursive;
+            font-size: 1.6rem;
+            letter-spacing: 0.03em;
+        }
+
+        .slide-date {
+            font-size: 0.88rem;
+            opacity: 0.8;
+        }
+
+        .slide-note {
+            font-family: "Shadows Into Light", cursive;
+            font-size: 1.1rem;
+            line-height: 1.5;
+            margin-top: 4px;
+            white-space: pre-line;
+        }
+
+        /* Controls */
+
+        .controls {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 320px;
+            /* matches approximate height of polaroid area */
+            padding: 0 4px;
+
+            .dots {
+                position: relative;
+                z-index: 5;
+                /* any number > 1 is fine */
+            }
+
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        button.nav-btn {
+            border: none;
+            padding: 8px 14px;
+            border-radius: 999px;
+            background: var(--accent);
+            color: #fff;
+            font-size: 0.9rem;
+            cursor: pointer;
+            font-family: inherit;
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.18);
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: transform 0.12s ease, box-shadow 0.12s ease, background 0.15s ease;
+        }
+
+        button.nav-btn:disabled {
+            opacity: 0.45;
+            cursor: default;
+            box-shadow: none;
+        }
+
+        button.nav-btn:not(:disabled):hover {
+            transform: translateY(-1px);
+            box-shadow: 0 7px 14px rgba(0, 0, 0, 0.2);
+            background: var(--accent-dark);
+        }
+
+        .slide-indicator {
+            font-size: 0.85rem;
+            opacity: 0.8;
+            font-family: "Shadows Into Light", cursive;
+            letter-spacing: 0.08em;
+        }
+
+        .dots {
+            display: flex;
+            gap: 5px;
+            justify-content: center;
+            margin-top: -10px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .dot {
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            border: 1px solid rgba(0, 0, 0, 0.3);
+            background: rgba(255, 255, 255, 0.8);
+            cursor: pointer;
+            padding: 0;
+            transition: transform 0.1s ease, background 0.1s ease;
+        }
+
+        .dot.active {
+            background: var(--accent);
+            transform: scale(1.1);
+        }
+
+        footer {
+            margin-top: 18px;
+            text-align: center;
+            font-size: 0.85rem;
+            opacity: 0.75;
+            font-family: "Shadows Into Light", cursive;
+        }
+
+        footer span.heart {
+            color: #e25555;
+        }
+
+        /* Responsive tweaks */
+        @media (max-width: 720px) {
+            .container {
+                padding: 20px 14px 22px;
+            }
+
+            .polaroid {
+                transform: rotate(-0.3deg);
+            }
+
+            .controls {
+                margin-top: 240px;
+                flex-direction: column;
+                gap: 6px;
+            }
+        }
+
+        /* PASSWORD OVERLAY */
+
+        .pw-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 999;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background:
+                radial-gradient(circle at top left, rgba(255, 255, 255, 0.55), transparent 55%),
+                radial-gradient(circle at bottom right, rgba(255, 255, 255, 0.45), transparent 55%),
+                rgba(0, 0, 0, 0.25);
+            backdrop-filter: blur(2px);
+        }
+
+        .pw-card {
+            position: relative;
+            max-width: 420px;
+            width: 100%;
+            background: var(--bg-paper);
+            padding: 28px 24px 22px;
+            border-radius: 22px;
+            box-shadow: 0 18px 35px rgba(0, 0, 0, 0.28);
+            border: 1px solid rgba(0, 0, 0, 0.08);
+        }
+
+        .pw-tape {
+            position: absolute;
+            width: 120px;
+            height: 26px;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 6px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.18);
+            z-index: 2;
+        }
+
+        .pw-tape.left {
+            top: -10px;
+            left: 40px;
+            transform: rotate(-11deg);
+        }
+
+        .pw-tape.right {
+            top: -8px;
+            right: 40px;
+            transform: rotate(9deg);
+        }
+
+        .pw-title {
+            font-family: "Shadows Into Light", cursive;
+            font-size: 1.9rem;
+            text-align: center;
+            margin-bottom: 6px;
+        }
+
+        .pw-subtitle {
+            text-align: center;
+            font-size: 0.95rem;
+            opacity: 0.85;
+            margin-bottom: 18px;
+        }
+
+        .pw-form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            margin-bottom: 10px;
+        }
+
+        .pw-label {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        .pw-input {
+            padding: 9px 10px;
+            border-radius: 10px;
+            border: 1px solid rgba(0, 0, 0, 0.16);
+            background: #fffdf8;
+            font-family: inherit;
+            font-size: 0.98rem;
+            outline: none;
+        }
+
+        .pw-input:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 1px rgba(230, 164, 180, 0.5);
+        }
+
+        .pw-show {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.85rem;
+            opacity: 0.85;
+            margin-bottom: 6px;
+        }
+
+        .pw-buttons {
+            display: flex;
+            justify-content: flex-end;
+            gap: 8px;
+            margin-top: 4px;
+        }
+
+        .pw-btn {
+            border-radius: 999px;
+            padding: 7px 16px;
+            border: none;
+            cursor: pointer;
+            font-family: inherit;
+            font-size: 0.9rem;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 9px rgba(0, 0, 0, 0.18);
+            transition: transform 0.1s ease, box-shadow 0.1s ease, background 0.15s ease;
+        }
+
+        .pw-btn-primary {
+            background: var(--accent);
+            color: #fff;
+        }
+
+        .pw-btn-primary:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.22);
+            background: var(--accent-dark);
+        }
+
+        .pw-btn-secondary {
+            background: #fffdf8;
+            color: var(--text-main);
+        }
+
+        .pw-btn-secondary:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.18);
+        }
+
+        .pw-error {
+            font-size: 0.8rem;
+            color: #c04b4b;
+            min-height: 1.2em;
+            margin-top: 4px;
+            opacity: 0;
+            transition: opacity 0.15s ease;
+        }
+
+        .pw-error.visible {
+            opacity: 1;
+        }
+
+        .pw-footer-note {
+            font-family: "Shadows Into Light", cursive;
+            font-size: 0.95rem;
+            text-align: center;
+            margin-top: 12px;
+            opacity: 0.85;
+        }
+
+        .pw-heart {
+            color: #e25555;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- PASSWORD OVERLAY -->
+    <div id="passwordOverlay" class="pw-overlay">
+        <div class="pw-card">
+            <div class="pw-tape left"></div>
+            <div class="pw-tape right"></div>
+
+            <h2 class="pw-title">Secret 🤫</h2>
+
+            <form id="passwordForm">
+                <div class="pw-form-group">
+                    <label for="passwordInput" class="pw-label">Password</label>
+                    <input type="password" id="passwordInput" class="pw-input" autocomplete="off" required />
+                </div>
+
+                <label class="pw-show">
+                    <input type="checkbox" id="showPassword" />
+                    Show password
+                </label>
+
+                <div id="pwError" class="pw-error"></div>
+
+                <div class="pw-buttons">
+                    <button type="button" class="pw-btn pw-btn-secondary" id="pwCancelBtn">
+                        Cancel
+                    </button>
+                    <button type="submit" class="pw-btn pw-btn-primary">
+                        Open scrapbook
+                    </button>
+                </div>
+            </form>
+
+        </div>
+    </div>
+
+    <!-- BASE CONTENT (hidden until password is correct) -->
+    <div class="container" id="baseContent" hidden>
+        <div class="tape top-left"></div>
+        <div class="tape top-right"></div>
+
+        <header>
+            <h1>Our First Year Together</h1>
+            <p>Little snapshots of all the moments that made this year ours ✨</p>
+        </header>
+
+        <main class="scrapbook">
+            <div class="slide-wrapper">
+
+                <!-- SLIDE 1 -->
+                <section class="slide active">
+                    <div class="polaroid">
+                        <div class="polaroid-inner">
+                            <div class="photo-frame">
+                                <!-- Replace with your own image -->
+                                <img src="images/date1.jpg" alt="First date at the café" />
+                            </div>
+                            <div class="slide-meta">
+                                <h2 class="slide-title">Our Very First Date</h2>
+                                <p class="slide-date">January 14, 2024 · ☕ Café Latte</p>
+                            </div>
+                            <p class="slide-note">
+                                I was so nervous and excited at the same time.
+                                You in that sweater, smiling across the table —
+                                I knew this was the start of something special. 💫
+                            </p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- SLIDE 2 -->
+                <section class="slide">
+                    <div class="polaroid" style="transform: rotate(1.2deg);">
+                        <div class="polaroid-inner">
+                            <div class="photo-frame">
+                                <img src="images/date2.jpg" alt="Hiking trail selfie" />
+                            </div>
+                            <div class="slide-meta">
+                                <h2 class="slide-title">Our Weekend Adventure</h2>
+                                <p class="slide-date">March 3, 2024 · 🌲 Hiking Day</p>
+                            </div>
+                            <p class="slide-note">
+                                We got lost, laughed way too much, and took a hundred selfies.
+                                My favorite part was just walking next to you with no rush to be anywhere.
+                            </p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- SLIDE 3 -->
+                <section class="slide">
+                    <div class="polaroid" style="transform: rotate(-0.8deg);">
+                        <div class="polaroid-inner">
+                            <div class="photo-frame">
+                                <img src="images/date3.jpg" alt="At the concert" />
+                            </div>
+                            <div class="slide-meta">
+                                <h2 class="slide-title">Dancing in the Crowd</h2>
+                                <p class="slide-date">June 21, 2024 · 🎵 Concert Night</p>
+                            </div>
+                            <p class="slide-note">
+                                The music was loud but your voice was the only thing I wanted to hear.
+                                I still think about how happy you looked that night.
+                            </p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Add more slides by copying the <section class="slide"> block -->
+
+                <div class="controls">
+                    <div class="nav-buttons">
+                        <button class="nav-btn" id="prevBtn">
+                            ← Previous
+                        </button>
+                        <button class="nav-btn" id="nextBtn">
+                            Next →
+                        </button>
+                    </div>
+                    <div class="slide-indicator" id="slideIndicator">
+                        Slide 1 of 3
+                    </div>
+                </div>
+
+                <div class="dots" id="dotsContainer">
+                    <!-- Dots will be created by JS -->
+                </div>
+
+            </div>
+        </main>
+
+        <footer>
+            Made with <span class="heart">♥</span> for you · 1 year down, many more to go
+        </footer>
+    </div>
+
+    <script>
+        // ------- PASSWORD LOGIC --------
+        const CORRECT_PASSWORD = "11/23/25"; // <--- change this to whatever you want
+
+        const passwordOverlay = document.getElementById("passwordOverlay");
+        const baseContent = document.getElementById("baseContent");
+        const passwordForm = document.getElementById("passwordForm");
+        const passwordInput = document.getElementById("passwordInput");
+        const showPasswordCheckbox = document.getElementById("showPassword");
+        const pwError = document.getElementById("pwError");
+        const pwCancelBtn = document.getElementById("pwCancelBtn");
+
+        window.addEventListener("load", () => {
+            passwordInput.focus();
+        });
+
+        showPasswordCheckbox.addEventListener("change", (e) => {
+            passwordInput.type = e.target.checked ? "text" : "password";
+        });
+
+        pwCancelBtn.addEventListener("click", () => {
+            passwordInput.value = "";
+            pwError.classList.remove("visible");
+            passwordInput.blur();
+        });
+
+        passwordForm.addEventListener("submit", (e) => {
+            e.preventDefault();
+            const entered = passwordInput.value.trim();
+
+            if (entered === CORRECT_PASSWORD) {
+                pwError.classList.remove("visible");
+                baseContent.hidden = false;
+
+                // Fade out overlay
+                passwordOverlay.style.transition = "opacity 0.3s ease";
+                passwordOverlay.style.opacity = "0";
+                setTimeout(() => {
+                    passwordOverlay.style.display = "none";
+                }, 300);
+            } else {
+                pwError.textContent = "what day is today??";
+                pwError.classList.add("visible");
+                passwordInput.value = "";
+                passwordInput.focus();
+            }
+        });
+
+        // ------- SLIDESHOW LOGIC --------
+        const slides = Array.from(document.querySelectorAll(".slide"));
+        const prevBtn = document.getElementById("prevBtn");
+        const nextBtn = document.getElementById("nextBtn");
+        const slideIndicator = document.getElementById("slideIndicator");
+        const dotsContainer = document.getElementById("dotsContainer");
+
+        let currentIndex = 0;
+
+        // Create dots based on number of slides
+        slides.forEach((_, index) => {
+            const dot = document.createElement("button");
+            dot.classList.add("dot");
+            if (index === 0) dot.classList.add("active");
+            dot.setAttribute("data-index", index);
+            dotsContainer.appendChild(dot);
+        });
+
+        const dots = Array.from(document.querySelectorAll(".dot"));
+
+        function updateSlides(newIndex) {
+            if (newIndex < 0) {
+                newIndex = slides.length - 1;
+            } else if (newIndex >= slides.length) {
+                newIndex = 0;
+            }
+            currentIndex = newIndex;
+
+            slides.forEach((slide, i) => {
+                slide.classList.toggle("active", i === currentIndex);
+            });
+
+            dots.forEach((dot, i) => {
+                dot.classList.toggle("active", i === currentIndex);
+            });
+
+            slideIndicator.textContent = `Slide ${currentIndex + 1} of ${slides.length}`;
+        }
+
+        prevBtn.addEventListener("click", () => {
+            updateSlides(currentIndex - 1);
+        });
+
+        nextBtn.addEventListener("click", () => {
+            updateSlides(currentIndex + 1);
+        });
+
+        dots.forEach(dot => {
+            dot.addEventListener("click", () => {
+                const idx = parseInt(dot.getAttribute("data-index"), 10);
+                updateSlides(idx);
+            });
+        });
+
+        document.addEventListener("keydown", (e) => {
+            // Only allow arrow navigation once the scrapbook is visible
+            if (baseContent.hidden) return;
+
+            if (e.key === "ArrowLeft") {
+                updateSlides(currentIndex - 1);
+            } else if (e.key === "ArrowRight") {
+                updateSlides(currentIndex + 1);
+            }
+        });
+    </script>
+</body>
+
+</html>

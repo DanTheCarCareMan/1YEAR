@@ -1,0 +1,2209 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>Our First Year Together 🤍</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <!-- Google Font for handwritten effect -->
+  <link
+    href="https://fonts.googleapis.com/css2?family=Shadows+Into+Light&family=Quicksand:wght@300;400;600&display=swap"
+    rel="stylesheet">
+
+  <style>
+    :root {
+      --bg-paper: #f8f1e7;
+      --accent: #e6a4b4;
+      --accent-dark: #c9788c;
+      --text-main: #463532;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    [hidden] {
+      display: none !important;
+    }
+
+    body {
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 24px;
+
+      /* Red gingham + paper grain background */
+      background:
+        /* big gingham checks */
+        linear-gradient(90deg, rgba(220, 120, 120, 0.22) 50%, transparent 50%) 0 0 / 40px 40px,
+        linear-gradient(0deg, rgba(220, 120, 120, 0.22) 50%, transparent 50%) 0 0 / 40px 40px,
+
+        /* smaller subtle crosshatch */
+        linear-gradient(90deg, rgba(220, 120, 120, 0.08) 50%, transparent 50%) 0 0 / 20px 20px,
+        linear-gradient(0deg, rgba(220, 120, 120, 0.08) 50%, transparent 50%) 0 0 / 20px 20px,
+
+        /* paper grain dots */
+        radial-gradient(rgba(0, 0, 0, 0.03) 1px, transparent 1px) 0 0 / 6px 6px,
+        radial-gradient(rgba(0, 0, 0, 0.025) 1px, transparent 1px) 3px 3px / 5px 5px,
+
+        /* base paper color */
+        #fdf7f0;
+
+      background-blend-mode: multiply, multiply, multiply, multiply, normal;
+      font-family: "Quicksand", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+      color: var(--text-main);
+    }
+
+    .container {
+      max-width: 1040px;
+      width: 100%;
+      background: rgba(255, 255, 255, 0.75);
+      backdrop-filter: blur(2px) brightness(1.05);
+      box-shadow: 0 18px 35px rgba(0, 0, 0, 0.12);
+      border-radius: 24px;
+
+      /* more space around everything */
+      padding: 80px 48px 90px;
+
+      /* NEW: make it tall enough for the whole photo + text */
+      min-height: 88vh;
+
+      position: relative;
+      overflow: visible;
+    }
+
+
+
+    /* Washi tape on main container */
+    .tape {
+      position: absolute;
+      width: 130px;
+      height: 28px;
+      background: rgba(255, 255, 255, 0.86);
+      border-radius: 6px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+      backdrop-filter: blur(1px);
+      z-index: 2;
+    }
+
+    .tape.top-left {
+      top: -6px;
+      left: 40px;
+      transform: rotate(-8deg);
+    }
+
+    .tape.top-right {
+      top: -10px;
+      right: 40px;
+      transform: rotate(7deg);
+    }
+
+    header {
+      margin-bottom: 16px;
+      position: relative;
+    }
+
+    .header-inner {
+      position: relative;
+      display: block;
+    }
+
+    .header-text {
+      max-width: none;
+      text-align: center;
+      margin: 0 auto;
+    }
+
+    header h1 {
+      font-family: "Shadows Into Light", cursive;
+      font-size: 2.6rem;
+      letter-spacing: 0.04em;
+      margin-bottom: 4px;
+    }
+
+    header p {
+      font-size: 0.98rem;
+      opacity: 0.82;
+    }
+
+    /* Tabs (top right) */
+    .tabs {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      flex-wrap: wrap;
+      position: absolute;
+      top: 0;
+      right: 0;
+    }
+
+    .tab-btn {
+      border-radius: 999px;
+      border: 1px dashed rgba(0, 0, 0, 0.22);
+      background: rgba(255, 255, 255, 0.9);
+      padding: 6px 14px;
+      font-size: 0.86rem;
+      cursor: pointer;
+      font-family: "Shadows Into Light", cursive;
+      letter-spacing: 0.06em;
+      box-shadow: 0 3px 7px rgba(0, 0, 0, 0.14);
+      transition:
+        transform 0.1s ease,
+        box-shadow 0.1s ease,
+        background 0.15s ease,
+        border-color 0.15s ease;
+    }
+
+    .tab-btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 5px 10px rgba(0, 0, 0, 0.18);
+    }
+
+    .tab-btn.active-tab {
+      background: var(--accent);
+      color: #fff;
+      border-color: transparent;
+      box-shadow: 0 5px 11px rgba(0, 0, 0, 0.22);
+    }
+
+    main {
+      margin-top: 12px;
+    }
+
+    .page-section {
+      display: none;
+    }
+
+    .page-section.active-section {
+      display: block;
+    }
+
+    /* SCRAPBOOK SECTION (slideshow) */
+
+    .scrapbook {
+      margin-top: 18px;
+      display: grid;
+      grid-template-columns: minmax(0, 2fr);
+      justify-content: center;
+      justify-items: center;
+    }
+
+    .slide-wrapper {
+      position: relative;
+      width: 100%;
+      max-width: 720px;
+      padding: 22px 16px 8px;
+    }
+
+    /* Each slide now lives in normal flow, only active one is shown */
+    .slide {
+      position: relative;
+      opacity: 0;
+      transform: translateX(8px);
+      transition: opacity 0.4s ease, transform 0.4s ease;
+      pointer-events: none;
+      display: none;
+      /* hide non-active slides */
+    }
+
+    .slide.active {
+      opacity: 1;
+      transform: translateX(0);
+      pointer-events: auto;
+      display: block;
+      /* only the active slide is visible */
+    }
+
+
+    .polaroid {
+      background: rgba(255, 255, 255, 0.96);
+      backdrop-filter: blur(2px);
+      border-radius: 20px;
+      padding: 16px 16px 20px;
+      box-shadow:
+        0 12px 22px rgba(0, 0, 0, 0.16),
+        0 0 0 1px rgba(0, 0, 0, 0.04);
+      position: relative;
+      max-width: 650px;
+      margin: 0 auto;
+      transform: rotate(-1.5deg);
+
+    }
+
+    .polaroid::before {
+      content: "";
+      position: absolute;
+      width: 80px;
+      height: 20px;
+      background: rgba(255, 255, 255, 0.9);
+      top: -12px;
+      left: 32%;
+      transform: rotate(-6deg);
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.14);
+      border-radius: 4px;
+    }
+
+    .polaroid-inner {
+      background: rgba(255, 255, 255, 0.96);
+      border-radius: 14px;
+      padding: 12px 12px 16px;
+      border: 1px solid rgba(0, 0, 0, 0.04);
+      margin: 0 auto;
+
+
+    }
+
+    .photo-frame {
+      background: #f0e8dc;
+      border-radius: 12px;
+      overflow: hidden;
+      margin-bottom: 10px;
+      transform: translateX(16px);
+      /* try 4–10px to taste */
+
+      /* NEW: make all photos use the same window size */
+      aspect-ratio: 4 / 3;
+      /* tweak to 3 / 4 or 16 / 9 if you prefer */
+      max-height: 420px;
+      /* safety cap on very tall screens */
+      object-position: center;
+      object-fit: cover;
+    }
+
+    .photo-frame img {
+      width: 100%;
+      height: 100%;
+      /* NEW: fill the frame vertically too */
+      display: block;
+      object-fit: cover;
+      /* crop nicely while keeping proportions */
+
+      /* Optional: center the crop vertically (good for portraits) */
+      object-position: center center;
+    }
+
+    .photo-frame video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      /* crop like an image */
+      object-position: center;
+      /* center the video content */
+      border-radius: 12px;
+      /* same shape as images */
+      display: block;
+    }
+
+    /* Default frame (other slides) uses your global .photo-frame rules */
+
+    /* For this one slide: make the frame a bit taller so less is cropped */
+    .slide-shoya .photo-frame {
+      aspect-ratio: 3 / 4;
+      /* taller window: change this number to taste */
+      max-height: 420px;
+      /* optional cap */
+      width: 84%;
+      /* or 90% – tweak to taste */
+      margin: 0 auto 12px;
+      /* center block + space under image */
+      transform: translateX(-2px);
+    }
+
+    /* Keep cover so it still fills the frame, but now with less cropping */
+    .slide-shoya .photo-frame img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: 83% 40%;
+      /* your current focus point */
+
+    }
+
+    .slide-photobooth .photo-frame {
+      aspect-ratio: 1 / 20;
+      /* taller window: change this number to taste */
+      max-height: 540px;
+      /* optional cap */
+      width: 65%;
+      /* or 90% – tweak to taste */
+      margin: 0 auto 12px;
+      /* center block + space under image */
+      transform: translateX(-2px);
+    }
+
+    /* Keep cover so it still fills the frame, but now with less cropping */
+    .slide-photobooth .photo-frame img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: 83% 40%;
+      /* your current focus point */
+
+    }
+
+    .slide-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 5px;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .slide-title {
+      font-family: "Shadows Into Light", cursive;
+      font-size: 1.6rem;
+      letter-spacing: 0.03em;
+    }
+
+    .slide-date {
+      font-size: 0.88rem;
+      opacity: 0.8;
+    }
+
+    .slide-note {
+      font-family: "Shadows Into Light", cursive;
+      font-size: 1.1rem;
+      line-height: 1.5;
+      margin-top: 4px;
+      white-space: pre-line;
+    }
+
+    .controls {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 24px;
+      padding: 0 4px;
+    }
+
+    .nav-buttons {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+
+    button.nav-btn {
+      border: none;
+      padding: 8px 16px;
+      border-radius: 999px;
+      background: var(--accent);
+      color: #fff;
+      font-size: 0.9rem;
+      cursor: pointer;
+      font-family: inherit;
+      box-shadow: 0 5px 10px rgba(0, 0, 0, 0.18);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: transform 0.12s ease, box-shadow 0.12s ease, background 0.15s ease;
+    }
+
+    button.nav-btn:disabled {
+      opacity: 0.45;
+      cursor: default;
+      box-shadow: none;
+    }
+
+    button.nav-btn:not(:disabled):hover {
+      transform: translateY(-1px);
+      box-shadow: 0 7px 14px rgba(0, 0, 0, 0.2);
+      background: var(--accent-dark);
+    }
+
+    .slide-indicator {
+      font-size: 0.85rem;
+      opacity: 0.8;
+      font-family: "Shadows Into Light", cursive;
+      letter-spacing: 0.08em;
+    }
+
+    .dots {
+      display: flex;
+      gap: 6px;
+      justify-content: center;
+      margin-top: -10px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .dot {
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      border: 1px solid rgba(0, 0, 0, 0.3);
+      background: rgba(255, 255, 255, 0.85);
+      cursor: pointer;
+      padding: 0;
+      transition: transform 0.1s ease, background 0.1s ease, border-color 0.1s ease;
+    }
+
+    .dot.active {
+      background: var(--accent);
+      border-color: transparent;
+      transform: scale(1.1);
+    }
+
+    /* QUIZ SECTION */
+
+    .quiz-wrapper {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 22px 10px 8px;
+    }
+
+    .quiz-card {
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(2px);
+      border-radius: 20px;
+      padding: 20px 18px 18px;
+      box-shadow:
+        0 12px 22px rgba(0, 0, 0, 0.16),
+        0 0 0 1px rgba(0, 0, 0, 0.05);
+      position: relative;
+    }
+
+    .quiz-card::before {
+      content: "";
+      position: absolute;
+      width: 90px;
+      height: 20px;
+      background: rgba(255, 255, 255, 0.9);
+      top: -12px;
+      left: 20%;
+      transform: rotate(-6deg);
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+      border-radius: 4px;
+    }
+
+    .quiz-title {
+      font-family: "Shadows Into Light", cursive;
+      font-size: 1.9rem;
+      margin-bottom: 6px;
+      text-align: center;
+    }
+
+    .quiz-subtitle {
+      text-align: center;
+      font-size: 0.95rem;
+      opacity: 0.85;
+      margin-bottom: 16px;
+    }
+
+    .quiz-question {
+      margin-bottom: 14px;
+      padding: 10px 10px 8px;
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.96);
+      border: 1px dashed rgba(0, 0, 0, 0.12);
+    }
+
+    .quiz-question-title {
+      font-family: "Shadows Into Light", cursive;
+      font-size: 1.2rem;
+      margin-bottom: 6px;
+    }
+
+    .quiz-options {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      font-size: 0.9rem;
+    }
+
+    .quiz-options label {
+      cursor: pointer;
+    }
+
+    .quiz-free-response {
+      margin-top: 6px;
+    }
+
+    .quiz-free-response textarea {
+      width: 100%;
+      min-height: 70px;
+      border-radius: 10px;
+      border: 1px solid rgba(0, 0, 0, 0.18);
+      padding: 8px 9px;
+      font-family: inherit;
+      font-size: 0.9rem;
+      resize: vertical;
+      background: rgba(255, 255, 255, 0.96);
+    }
+
+    .quiz-actions {
+      display: flex;
+      justify-content: flex-end;
+      margin-top: 10px;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .quiz-btn {
+      border-radius: 999px;
+      border: none;
+      padding: 7px 16px;
+      font-size: 0.9rem;
+      font-family: inherit;
+      cursor: pointer;
+      box-shadow: 0 4px 9px rgba(0, 0, 0, 0.18);
+      background: var(--accent);
+      color: #fff;
+      transition: transform 0.1s ease, box-shadow 0.1s ease, background 0.15s ease;
+    }
+
+    .quiz-btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.22);
+      background: var(--accent-dark);
+    }
+
+    .quiz-result {
+      font-size: 0.9rem;
+      opacity: 0.9;
+    }
+
+    .quiz-result span {
+      font-family: "Shadows Into Light", cursive;
+      font-size: 1.2rem;
+    }
+
+
+    /* GALLERY SECTION */
+
+    .gallery-wrapper {
+      max-width: 780px;
+      margin: 0 auto;
+      padding: 22px 8px 8px;
+    }
+
+    .gallery-intro {
+      text-align: center;
+      margin-bottom: 14px;
+    }
+
+    .gallery-intro-title {
+      font-family: "Shadows Into Light", cursive;
+      font-size: 1.9rem;
+      margin-bottom: 4px;
+    }
+
+    .gallery-intro-text {
+      font-size: 0.95rem;
+      opacity: 0.85;
+    }
+
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 14px;
+      margin-top: 10px;
+    }
+
+    .gallery-item {
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(1px);
+      border-radius: 16px;
+      padding: 8px 8px 10px;
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.16);
+      position: relative;
+    }
+
+    .gallery-item:nth-child(odd) {
+      transform: rotate(-2deg);
+    }
+
+    .gallery-item:nth-child(even) {
+      transform: rotate(2deg);
+    }
+
+    .gallery-photo-frame {
+      border-radius: 12px;
+      overflow: hidden;
+      background: #f0e8dc;
+      margin-bottom: 6px;
+    }
+
+    .gallery-photo-frame img {
+      width: 100%;
+      height: 100%;
+      display: block;
+      object-fit: cover;
+    }
+
+    .gallery-caption {
+      font-family: "Shadows Into Light", cursive;
+      font-size: 0.95rem;
+      text-align: center;
+      margin-top: 4px;
+    }
+
+    footer {
+      margin-top: 20px;
+      text-align: center;
+      font-size: 0.85rem;
+      opacity: 0.78;
+      font-family: "Shadows Into Light", cursive;
+    }
+
+    footer span.heart {
+      color: #e25555;
+    }
+
+    /* ROUND MUSIC BUTTON (bottom-left) */
+
+    .music-toggle {
+      position: fixed;
+      bottom: 24px;
+      left: 24px;
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      border: none;
+      cursor: pointer;
+      background: rgba(230, 164, 180, 0.96);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.25);
+      backdrop-filter: blur(3px);
+      transition: transform 0.12s ease, box-shadow 0.12s ease, background 0.15s ease;
+      z-index: 1000;
+    }
+
+    .music-toggle:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.28);
+      background: var(--accent-dark);
+    }
+
+    .music-icon {
+      font-size: 1.6rem;
+      line-height: 1;
+      pointer-events: none;
+    }
+
+
+    .music-muted-indicator {
+      position: absolute;
+      bottom: -2px;
+      right: -2px;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: #e25555;
+      color: #fff;
+      font-size: 0.75rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.9);
+    }
+
+    /* hide red badge when not muted */
+    .music-toggle:not(.muted) .music-muted-indicator {
+      display: none;
+    }
+
+    /* Responsive tweaks */
+    @media (max-width: 720px) {
+      body {
+        padding: 16px;
+      }
+
+      .container {
+        padding: 32px 18px 30px;
+      }
+
+      .polaroid {
+        transform: rotate(-0.3deg);
+      }
+
+      .controls {
+        margin-top: 260px;
+        flex-direction: column;
+        gap: 6px;
+      }
+
+      .header-text {
+        max-width: 100%;
+      }
+
+      .tabs {
+        position: static;
+        justify-content: center;
+        margin-top: 10px;
+      }
+
+      header {
+        text-align: center;
+      }
+    }
+
+    /* PASSWORD OVERLAY */
+
+    .pw-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 999;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background:
+        radial-gradient(circle at top left, rgba(255, 255, 255, 0.55), transparent 55%),
+        radial-gradient(circle at bottom right, rgba(255, 255, 255, 0.45), transparent 55%),
+        rgba(0, 0, 0, 0.25);
+      backdrop-filter: blur(4px);
+    }
+
+    .pw-card {
+      position: relative;
+      max-width: 420px;
+      width: 100%;
+      background: rgba(255, 255, 255, 0.9);
+      backdrop-filter: blur(3px);
+      padding: 28px 24px 22px;
+      border-radius: 22px;
+      box-shadow: 0 18px 35px rgba(0, 0, 0, 0.28);
+      border: 1px solid rgba(0, 0, 0, 0.08);
+    }
+
+    .pw-tape {
+      position: absolute;
+      width: 120px;
+      height: 26px;
+      background: rgba(255, 255, 255, 0.9);
+      border-radius: 6px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.18);
+      z-index: 2;
+    }
+
+    .pw-tape.left {
+      top: -10px;
+      left: 40px;
+      transform: rotate(-11deg);
+    }
+
+    .pw-tape.right {
+      top: -8px;
+      right: 40px;
+      transform: rotate(9deg);
+    }
+
+    .pw-title {
+      font-family: "Shadows Into Light", cursive;
+      font-size: 1.9rem;
+      text-align: center;
+      margin-bottom: 6px;
+    }
+
+    .pw-subtitle {
+      text-align: center;
+      font-size: 0.95rem;
+      opacity: 0.85;
+      margin-bottom: 18px;
+    }
+
+    .pw-form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-bottom: 10px;
+    }
+
+    .pw-label {
+      font-size: 0.9rem;
+      opacity: 0.9;
+    }
+
+    .pw-input {
+      padding: 9px 10px;
+      border-radius: 10px;
+      border: 1px solid rgba(0, 0, 0, 0.16);
+      background: #fffdf8;
+      font-family: inherit;
+      font-size: 0.98rem;
+      outline: none;
+    }
+
+    .pw-input:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 1px rgba(230, 164, 180, 0.5);
+    }
+
+    .pw-show {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.85rem;
+      opacity: 0.85;
+      margin-bottom: 6px;
+    }
+
+    .pw-buttons {
+      display: flex;
+      justify-content: flex-end;
+      gap: 8px;
+      margin-top: 4px;
+    }
+
+    .pw-btn {
+      border-radius: 999px;
+      padding: 7px 16px;
+      border: none;
+      cursor: pointer;
+      font-family: inherit;
+      font-size: 0.9rem;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 9px rgba(0, 0, 0, 0.18);
+      transition: transform 0.1s ease, box-shadow 0.1s ease, background 0.15s ease;
+    }
+
+    .pw-btn-primary {
+      background: var(--accent);
+      color: #fff;
+    }
+
+    .pw-btn-primary:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.22);
+      background: var(--accent-dark);
+    }
+
+    .pw-btn-secondary {
+      background: #fffdf8;
+      color: var(--text-main);
+    }
+
+    .pw-btn-secondary:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.18);
+    }
+
+    .pw-error {
+      font-size: 0.8rem;
+      color: #c04b4b;
+      min-height: 1.2em;
+      margin-top: 4px;
+      opacity: 0;
+      transition: opacity 0.15s ease;
+    }
+
+    .pw-error.visible {
+      opacity: 1;
+    }
+
+    .pw-footer-note {
+      font-family: "Shadows Into Light", cursive;
+      font-size: 0.95rem;
+      text-align: center;
+      margin-top: 12px;
+      opacity: 0.85;
+    }
+
+    .pw-heart {
+      color: #e25555;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- PASSWORD OVERLAY -->
+  <div id="passwordOverlay" class="pw-overlay">
+    <div class="pw-card">
+      <div class="pw-tape left"></div>
+      <div class="pw-tape right"></div>
+
+      <h2 class="pw-title">Secret 🤫</h2>
+      <p class="pw-subtitle">
+        top secret information
+      </p>
+
+      <form id="passwordForm" autocomplete="off">
+        <div class="pw-form-group">
+          <label for="passwordInput" class="pw-label">Password</label>
+          <input type="password" id="passwordInput" class="pw-input" autocomplete="off" required />
+        </div>
+
+        <label class="pw-show">
+          <input type="checkbox" id="showPassword" />
+          Show password
+        </label>
+
+        <div id="pwError" class="pw-error"></div>
+
+        <div class="pw-buttons">
+          <button type="button" class="pw-btn pw-btn-secondary" id="pwCancelBtn">
+            Cancel
+          </button>
+          <button type="submit" class="pw-btn pw-btn-primary">
+            Open sesame
+          </button>
+        </div>
+      </form>
+
+      <p class="pw-footer-note">
+        Bliss and Daniel ONLY
+      </p>
+    </div>
+  </div>
+
+  <!-- BASE CONTENT (hidden until password is correct) -->
+  <div class="container" id="baseContent" hidden>
+    <div class="tape top-left"></div>
+    <div class="tape top-right"></div>
+
+    <header>
+      <div class="header-inner">
+        <div class="header-text">
+          <h1>1 Year Together ❤️</h1>
+          <p>+ Our Memories</p>
+        </div>
+
+        <nav class="tabs">
+          <button class="tab-btn active-tab" data-section="scrapbookSection">Scrapbook</button>
+          <button class="tab-btn" data-section="quizSection">Quiz</button>
+          <button class="tab-btn tab-disabled" data-section="gallerySection">Gallery</button>
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      <!-- SCRAPBOOK SECTION -->
+      <section id="scrapbookSection" class="page-section active-section">
+        <main class="scrapbook">
+          <div class="slide-wrapper">
+
+            <!-- SLIDE 1 -->
+            <section class="slide active">
+              <div class="polaroid">
+                <div class="polaroid-inner">
+                  <div class="photo-frame">
+                    <img src="/Users/dan/1YEAR/otter.webp" alt="Me + U" style="object-position: 70% 100%;" />
+                  </div>
+                  <div class="slide-meta">
+                    <h2 class="slide-title">^ Me and You (I'm on the left)</h2>
+                  </div>
+                  <p class="slide-note">
+                    Happy 1 Year!! I hope you enjoy this little scrapbook of some of our many memories over the past
+                    year.
+                    The otters are basically us the day we met.
+                    Thank you for giving me the best and most exciting year I've ever lived. I love you! <3 Anyways, you
+                      should get started with the slides and go through our journey together. Also, if you want music,
+                      look at the bottom left corner :) </p>
+                </div>
+              </div>
+            </section>
+
+            <!-- SLIDE 2 -->
+            <section class="slide">
+              <div class="polaroid">
+                <div class="polaroid-inner">
+                  <div class="photo-frame">
+                    <img src="/Users/dan/1YEAR/firsttext.jpg" alt="First text D:" style="object-position: 50% 70%;" />
+                  </div>
+                  <div class="slide-meta">
+                    <h2 class="slide-title">First Text</h2>
+                    <p class="slide-date">August 22, 2024 · 📍Hinge</p>
+                  </div>
+                  <p class="slide-note">
+                    Our first messages😭😭😭😭
+                    I think it's cute looking back on these texts. I really wanted to be an interesting texter and
+                    impress you, so I was using so many emojis... I was just a little nervous.
+                    Thanks for responding to me LOL
+                  </p>
+                </div>
+              </div>
+            </section>
+
+            <!-- SLIDE 3 -->
+            <section class="slide slide-shoya">
+              <div class="polaroid" style="transform: rotate(0.5deg);">
+                <div class="polaroid-inner">
+                  <div class="photo-frame">
+                    <img src="/Users/dan/1YEAR/shoya.jpg" alt="First meal together" style="object-position: 50% 40%;
+                    " />
+                  </div>
+                  <div class="slide-meta">
+                    <h2 class="slide-title">First Date!</h2>
+                    <p class="slide-date">August 31, 2024 · 🍽️Shoya</p>
+                  </div>
+                  <p class="slide-note">
+                    I wish I took pictures of our first date :(, but at least I have a picture of the food we ate.
+                    Sorry for not being the best conversationalist that day hahaha. I blame it on the nerves.
+                    Buttt, it was the start of our many dates. I remember thinking about how much I enjoyed talking to
+                    you that day. I can't believe we went to the museum, you helped me get my tire fixed, you gave me an
+                    Emory tour, AND we went to dinner.
+                    Am I big back for only taking a pic of the food??
+                  </p>
+                </div>
+              </div>
+            </section>
+
+
+            <!-- SLIDE 4 -->
+            <section class="slide">
+              <div class="polaroid">
+                <div class="polaroid-inner">
+                  <div class="photo-frame">
+                    <img src="/Users/dan/1YEAR/benefitconcert.jpg" alt="First pic together!"
+                      style="object-position: 50% 70%;" />
+                  </div>
+                  <div class="slide-meta">
+                    <h2 class="slide-title">Benefit Concert</h2>
+                    <p class="slide-date">November 17, 2024 · 📍Emory</p>
+                  </div>
+                  <p class="slide-note">
+                    Our first photo together! If I didn't decide to go surprise you at the benefit concert, would we
+                    still be here today?
+                    Regardless, I remember being really glad I surprised you there. The benefit concert was also a
+                    really good time I can't lie (thanks to the best Link President ever).
+                  </p>
+                </div>
+              </div>
+            </section>
+
+
+            <!-- SLIDE 5 -->
+            <section class="slide slide-shoya">
+              <div class="polaroid" style="transform: rotate(1.2deg);">
+                <div class="polaroid-inner">
+                  <div class="photo-frame">
+                    <img src="/Users/dan/1YEAR/abelbrown.jpg" alt="First meal together" style="object-position: 100% 20%;
+                    " />
+                  </div>
+                  <div class="slide-meta">
+                    <h2 class="slide-title">THE NIGHT</h2>
+                    <p class="slide-date">November 22, 2024 · 📍Abel Brown</p>
+                  </div>
+                  <p class="slide-note">
+                    The night I asked you to be my girlfriend, for the second time XD.
+                    I was plotting the whole night. Did you know I was going to ask you?
+                    Our anniversary should technically be the 22nd, but I waited until you left Augusta to ask you out.
+                    Also, that lady at Abel Brown was foreshadowing our future for real. Remember when she asked us if
+                    it was "date night"? She must've thought we were a couple. I mean we basically were tho.
+                  </p>
+                </div>
+              </div>
+            </section>
+
+            <!-- SLIDE 6 -->
+            <section class="slide">
+              <div class="polaroid" style="transform: rotate(0.9deg);">
+                <div class="polaroid-inner">
+                  <div class="photo-frame">
+                    <img src="/Users/dan/1YEAR/savannah.jpg" alt="Savannah" />
+                  </div>
+                  <div class="slide-meta">
+                    <h2 class="slide-title">First Trip Together</h2>
+                    <p class="slide-date">December 1, 2024 · 🌊 Savannah, GA</p>
+                  </div>
+                  <p class="slide-note">
+                    I don't know what it is, but this trip feels so nostaligc already. Not gonna lie, life felt so
+                    care-free and simple at the time.
+                    Savannah was such a cute and intimate trip, and I loved every moment of it with you. Shoutout to
+                    Raven, the best ghost tour guide ever 😂.
+                    This trip was so special to me, and I want to cherish it for the rest of my life.
+                    Let's go on some more trips together soon, ok?
+                  </p>
+                </div>
+              </div>
+            </section>
+
+            <!-- SLIDE 7 -->
+            <section class="slide">
+              <div class="polaroid" style="transform: rotate(0deg);">
+                <div class="polaroid-inner">
+                  <div class="photo-frame">
+                    <img src="/Users/dan/1YEAR/iceskating.jpg" alt="Savannah" />
+                  </div>
+                  <div class="slide-meta">
+                    <h2 class="slide-title">Ice Skating</h2>
+                    <p class="slide-date">December 17, 2024 · 🧊 Midtown Atlanta</p>
+                  </div>
+                  <p class="slide-note">
+                    The start of our little friend group w Danny and JT lolol.
+                    I still carry around the polaroid of us everywhere I go.
+                    Wait also, don't we look so different now??
+                  </p>
+                </div>
+              </div>
+            </section>
+
+            <!-- SLIDE 8 -->
+            <section class="slide">
+              <div class="polaroid" style="transform: rotate(-0.7deg);">
+                <div class="polaroid-inner">
+                  <div class="photo-frame">
+                    <img src="/Users/dan/1YEAR/shark.jpg" alt="SHARK" />
+                  </div>
+                  <div class="slide-meta">
+                    <h2 class="slide-title">SHARK</h2>
+                    <p class="slide-date">January 24, 2025 · 🦈Georgia Aquarium</p>
+                  </div>
+                  <p class="slide-note">
+                    AHHHH.
+                  </p>
+                </div>
+              </div>
+            </section>
+
+
+            <!-- SLIDE 9 -->
+            <section class="slide slide-photobooth">
+              <div class="polaroid" style="transform: rotate(-0.2deg);">
+                <div class="polaroid-inner">
+                  <div class="photo-frame">
+                    <img src="/Users/dan/1YEAR/photobooth.jpg" alt="photobooth" />
+                  </div>
+                  <div class="slide-meta">
+                    <h2 class="slide-title">WINTER TRIP</h2>
+                    <p class="slide-date">January 25, 2025 · 📍Life 4 Cuts</p>
+                  </div>
+                  <p class="slide-note">
+                    This winter trip was SOO good. We did so much, and so much happened!
+                    You got to experience your first snow, your classes got cancelled, we went to so many new
+                    restaurants, and we also had our first...
+                    (I was not nervous whatsoever)
+                    Shoutout to that conductor too, I hope he's doing well.
+                  </p>
+                </div>
+              </div>
+            </section>
+
+
+            <!-- SLIDE 10 -->
+            <section class="slide slide-photobooth">
+              <div class="polaroid" style="transform: rotate(1deg);">
+                <div class="polaroid-inner">
+                  <div class="photo-frame">
+                    <img src="/Users/dan/1YEAR/sydney.jpg" alt="sydney" />
+                  </div>
+                  <div class="slide-meta">
+                    <h2 class="slide-title">Goodbye USA</h2>
+                    <p class="slide-date">Feb 10, 2025 · 📍Sydney, Australia</p>
+                  </div>
+                  <p class="slide-note">
+                    The start of our LONG distance journey. Honestly, I'm so proud of us for making it through this
+                    chapter.
+                    Can you believe it.. 16 hours time difference????
+                    To be honest, I'm glad this chapter is over, and althought it wasn't the best for either of us, we
+                    learned so much from it. And I wouldn't want to have done it with anyone else.
+                    Here's just a very brief recap!
+                  </p>
+                </div>
+              </div>
+            </section>
+
+            <!-- SLIDE 11 -->
+            <section class="slide">
+              <div class="polaroid" style="transform: rotate(0deg);">
+                <div class="polaroid-inner">
+                  <div class="photo-frame">
+                    <img src="/Users/dan/1YEAR/cinnamonrolls.jpg" alt="Baking" style="object-position: 70% 100%;" />
+                  </div>
+                  <div class="slide-meta">
+                    <h2 class="slide-title">SO MUCH FACETIME</h2>
+                    <p class="slide-date">March 27, 2025 · 📍FaceTime</p>
+                  </div>
+                  <p class="slide-note">
+                    We facetimed so much, there should be a tracker to see how long we facetimed for in Australia. I bet
+                    it's probably over 500 hours!
+                    + the start of our baking journey!!
+                  </p>
+                </div>
+              </div>
+            </section>
+
+            <!-- SLIDE 12 -->
+
+            <section class="slide slide-photobooth">
+              <div class="polaroid" style="transform: rotate(0deg);">
+                <div class="polaroid-inner">
+                  <div class="photo-frame">
+                    <img src="/Users/dan/1YEAR/turnovers.jpg" alt="Baking" style="object-position: 70% 100%;" />
+                  </div>
+                  <div class="slide-meta">
+                    <h2 class="slide-title">Apple Turnovers</h2>
+                    <p class="slide-date">May 1, 2025 · 📍FaceTime</p>
+                  </div>
+                  <p class="slide-note">
+                    Soo good 😋
+                  </p>
+                </div>
+              </div>
+            </section>
+
+            <!-- SLIDE 12 -->
+
+            <section class="slide slide-photobooth">
+              <div class="polaroid" style="transform: rotate(0deg);">
+                <div class="polaroid-inner">
+                  <div class="photo-frame">
+                    <img src="/Users/dan/1YEAR/connections.jpg" alt="NYTimes" style="object-position: 70% 50%;" />
+                  </div>
+                  <div class="slide-meta">
+                    <h2 class="slide-title">Our Favorite</h2>
+                    <p class="slide-date">May 15, 2025 · 📍FaceTime</p>
+                  </div>
+                  <p class="slide-note">
+                    Thanks for always carrying us. 🙏
+                  </p>
+                </div>
+              </div>
+            </section>
+
+            <!-- SLIDE 13 -->
+
+            <section class="slide slide-photobooth">
+              <div class="polaroid" style="transform: rotate(0deg);">
+                <div class="polaroid-inner">
+                  <div class="photo-frame">
+                    <img src="/Users/dan/1YEAR/letter.jpg" alt="best letter ever" style="object-position: 70% 100%;" />
+                  </div>
+                  <div class="slide-meta">
+                    <h2 class="slide-title">Sweetest Gift Ever</h2>
+                    <p class="slide-date">May 30, 2025 · 📍Sydney, Australia</p>
+                  </div>
+                  <p class="slide-note">
+                    These letters you wrote were so sweet and wholesome. It was one of the sweetest gifts I've ever
+                    received, and I still read them from time to time. It makes me feel so much better when I'm stressed
+                    or having a bad day.
+                    I love youu!
+                  </p>
+                </div>
+              </div>
+            </section>
+
+            <!-- SLIDE 14 -->
+
+            <section class="slide slide-photobooth">
+              <div class="polaroid" style="transform: rotate(0deg);">
+                <div class="polaroid-inner">
+                  <div class="photo-frame">
+                    <img src="/Users/dan/1YEAR/facetimepic.jpg" alt="facetimelolol" style="object-position: 70% 85%;" />
+                  </div>
+                  <div class="slide-meta">
+                    <h2 class="slide-title">No caption needed</h2>
+                    <p class="slide-date">June 22, 2025 · 📍Sydney, Australia</p>
+                  </div>
+                  <p class="slide-note">
+                  </p>
+                </div>
+              </div>
+            </section>
+
+            <!-- SLIDE 13 -->
+
+            <section class="slide">
+              <div class="polaroid" style="transform: rotate(0deg);">
+                <div class="polaroid-inner">
+                  <div class="photo-frame">
+                    <img src="/Users/dan/1YEAR/stardew.jpg" alt="stardew!" style="object-position: 70% 100%;" />
+                  </div>
+                  <div class="slide-meta">
+                    <h2 class="slide-title">STARDEW</h2>
+                    <p class="slide-date">May 30, 2025 · 📍Sydney, Australia</p>
+                  </div>
+                  <p class="slide-note">
+                    Soo cute. When are we bringing it back 😩
+                  </p>
+                </div>
+              </div>
+            </section>
+
+
+            <!-- SLIDE 15 -->
+
+            <section class="slide slide-photobooth">
+              <div class="polaroid" style="transform: rotate(0deg);">
+                <div class="polaroid-inner">
+                  <div class="photo-frame">
+                    <video src="/Users/dan/1YEAR/locket.mov" autoplay loop muted playsinline
+                      onclick="this.paused ? this.play() : this.pause()"></video>
+                  </div>
+                  <div class="slide-meta">
+                    <h2 class="slide-title">LOCKET</h2>
+                    <p class="slide-date">June 30, 2025 · 📍Many Locaions</p>
+                  </div>
+                  <p class="slide-note">
+                    When are we bringing back locket?
+                  </p>
+                </div>
+              </div>
+            </section>
+
+            <!-- SLIDE 16 -->
+
+            <section class="slide slide-photobooth">
+              <div class="polaroid" style="transform: rotate(0deg);">
+                <div class="polaroid-inner">
+                  <div class="photo-frame">
+                    <img src="/Users/dan/1YEAR/leavingsydney.jpg" alt="LEAVING SYDNEY"
+                      style="object-position: 70% 100%;" />
+                  </div>
+                  <div class="slide-meta">
+                    <h2 class="slide-title">THE END OF AUSTRALIA</h2>
+                    <p class="slide-date">July 11, 2025 · 📍Sydney, Australia</p>
+                  </div>
+                  <p class="slide-note">
+                    And after 6 long months... I finally began my tip back to the US! FINALLYYY
+                  </p>
+                </div>
+              </div>
+            </section>
+
+            <!-- SLIDE 17 -->
+
+            <section class="slide slide-photobooth">
+              <div class="polaroid" style="transform: rotate(-0.4deg);">
+                <div class="polaroid-inner">
+                  <div class="photo-frame">
+                    <img src="/Users/dan/1YEAR/FLIGHTTOATL.jpg" alt="LEAVING SYDNEY"
+                      style="object-position: 70% 100%;" />
+                  </div>
+                  <div class="slide-meta">
+                    <h2 class="slide-title">FLIGHT TO ATLANTA</h2>
+                    <p class="slide-date">August 9, 2025 · 📍Madison, WI</p>
+                  </div>
+                  <p class="slide-note">
+                    And after just 1 more month...
+                  </p>
+                </div>
+              </div>
+            </section>
+
+
+            <!-- SLIDE 17 -->
+
+            <section class="slide slide-photobooth">
+              <div class="polaroid" style="transform: rotate(0.8deg);">
+                <div class="polaroid-inner">
+                  <div class="photo-frame">
+                    <img src="/Users/dan/1YEAR/reunited.jpg" alt="danielback!" style="object-position: 70% 100%;" />
+                  </div>
+                  <div class="slide-meta">
+                    <h2 class="slide-title">REUNITED</h2>
+                    <p class="slide-date">August 9, 2025 · 📍Atlanta, GA</p>
+                  </div>
+                  <p class="slide-note">
+                    I can't even begin to explain how hard it was to go 7 months without seeing you. Not gonna lie, it
+                    might have been the hardest thing I've ever done.
+                    But, seeing you again made it all worth it for real for real.
+                    Now, I can finally make the rest of the slides with us together. So, for the last part of the
+                    scrapbook, here are some of our recent memories together!
+                  </p>
+                </div>
+              </div>
+            </section>
+
+            <!-- SLIDE 17 -->
+
+            <section class="slide slide-photobooth">
+              <div class="polaroid" style="transform: rotate(-0.2deg);">
+                <div class="polaroid-inner">
+                  <div class="photo-frame">
+                    <img src="/Users/dan/1YEAR/arcade.jpg" alt="at the arcade!" style="object-position: 70% 100%;" />
+                  </div>
+                  <div class="slide-meta">
+                    <h2 class="slide-title">Arcade Double Date</h2>
+                    <p class="slide-date">August 13, 2025 · 📍Atlanta, GA</p>
+                  </div>
+                  <p class="slide-note">
+                    Double date w Danny and JT.
+                    We were able to get our matching flower penguins! (Thanks JT)
+                    Also, you flipping off the worker was so funny. Let's find him again and do it again LOL.
+                    I hope he learns his lesson. We shoulda had at least one other plushie.
+                  </p>
+                </div>
+              </div>
+            </section>
+
+            <!-- SLIDE 18 -->
+
+            <section class="slide">
+              <div class="polaroid" style="transform: rotate(-1.2deg);">
+                <div class="polaroid-inner">
+                  <div class="photo-frame">
+                    <img src="/Users/dan/1YEAR/delbarphoto.jpg" alt="Cute photo of us"
+                      style="object-position: 70% 100%;" />
+                  </div>
+                  <div class="slide-meta">
+                    <h2 class="slide-title">Birthday Dinner</h2>
+                    <p class="slide-date">August 15, 2025 · 📍Atlanta, GA</p>
+                  </div>
+                  <p class="slide-note">
+                    I love this photo so much. You look so pretty!
+                    I'm very grateful I got to celebrate your birthday with you. Happy 21st :)
+                  </p>
+                </div>
+              </div>
+            </section>
+
+            <!-- SLIDE 19 -->
+
+            <section class="slide">
+              <div class="polaroid" style="transform: rotate(0deg);">
+                <div class="polaroid-inner">
+                  <div class="photo-frame">
+                    <img src="/Users/dan/1YEAR/flowerpicking.jpg" alt="Cute photo of us"
+                      style="object-position: 70% 50%;" />
+                  </div>
+                  <div class="slide-meta">
+                    <h2 class="slide-title">Flower Picking</h2>
+                    <p class="slide-date">August 16, 2025 · 🌺Southern Belle Farm</p>
+                  </div>
+                  <p class="slide-note">
+                    One day, let's own our own little farm together so we can grow flowers and vegetables.
+                    And don't worry, I'll do all the manual labor 💀
+                  </p>
+                </div>
+              </div>
+            </section>
+
+
+            <!-- SLIDE 20 -->
+
+            <section class="slide slide-photobooth">
+              <div class="polaroid" style="transform: rotate(1deg);">
+                <div class="polaroid-inner">
+                  <div class="photo-frame">
+                    <img src="/Users/dan/1YEAR/angrybliss.jpg" alt="Cute photo of us"
+                      style="object-position: 70% 50%;" />
+                  </div>
+                  <div class="slide-meta">
+                    <h2 class="slide-title">Angry Bliss</h2>
+                    <p class="slide-date">August 20, 2025 · 📍Scary Elevator</p>
+                  </div>
+                  <p class="slide-note">
+                    This is you when I don't do the manual labor on the farm.
+                  </p>
+                </div>
+              </div>
+            </section>
+
+
+
+            <!-- SLIDE 21 -->
+
+            <section class="slide">
+              <div class="polaroid" style="transform: rotate(-0.5deg);">
+                <div class="polaroid-inner">
+                  <div class="photo-frame">
+                    <img src="/Users/dan/1YEAR/pirates.jpg" alt="Cute photo of us" style="object-position: 70% 50%;" />
+                  </div>
+                  <div class="slide-meta">
+                    <h2 class="slide-title">ARGHH</h2>
+                    <p class="slide-date">August 25, 2025 · 📍Master Mind Escape Room</p>
+                  </div>
+                  <p class="slide-note">
+                    Escape room MVP is.... you ofc! I was helpful too tho
+                  </p>
+                </div>
+              </div>
+            </section>
+
+            <!-- SLIDE 21 -->
+
+            <section class="slide">
+              <div class="polaroid" style="transform: rotate(-1.2deg);">
+                <div class="polaroid-inner">
+                  <div class="photo-frame">
+                    <img src="/Users/dan/1YEAR/facemask.jpg" alt="Cute photo of us" style="object-position: 70% 50%;" />
+                  </div>
+                  <div class="slide-meta">
+                    <h2 class="slide-title">Face Masks</h2>
+                    <p class="slide-date">August 25, 2025 · 📍Bliss's Bed</p>
+                  </div>
+                  <p class="slide-note">
+                    Gotta get that glass skin y'know?
+                  </p>
+                </div>
+              </div>
+            </section>
+
+            <!-- SLIDE 21 -->
+
+            <section class="slide slide-photobooth">
+              <div class="polaroid" style="transform: rotate(0.6deg);">
+                <div class="polaroid-inner">
+                  <div class="photo-frame">
+                    <img src="/Users/dan/1YEAR/applepicking.jpg" alt="Cute photo of us"
+                      style="object-position: 70% 50%;" />
+                  </div>
+                  <div class="slide-meta">
+                    <h2 class="slide-title">Apple Pickin <3< /h2>
+                        <p class="slide-date">October 31, 2025 · 🍎BJ Reese's Orchard</p>
+                  </div>
+                  <p class="slide-note">
+                    Our apple picking desires were finally fulfilled. I'm the best apple picker out there 😈
+                  </p>
+                </div>
+              </div>
+            </section>
+
+            <!-- SLIDE 22 -->
+
+            <section class="slide slide-photobooth">
+              <div class="polaroid" style="transform: rotate(0.6deg);">
+                <div class="polaroid-inner">
+                  <div class="photo-frame">
+                    <img src="/Users/dan/1YEAR/pumpkinn.jpg" alt="PUMPKINN" style="object-position: 70% 50%;" />
+                  </div>
+                  <div class="slide-meta">
+                    <h2 class="slide-title">PUMPKINN</h2>
+                    <p class="slide-date">November 1, 2025 · 🎃PUMPKINN🎃</p>
+                  </div>
+                  <p class="slide-note">
+                    🎃🎃🎃
+                  </p>
+                </div>
+              </div>
+            </section>
+            <!-- SLIDE 22 -->
+
+            <section class="slide slide-photobooth">
+              <div class="polaroid" style="transform: rotate(-0.9deg);">
+                <div class="polaroid-inner">
+                  <div class="photo-frame">
+                    <img src="/Users/dan/1YEAR/hiking.jpg" alt="hiking" style="object-position: 70% 50%;" />
+                  </div>
+                  <div class="slide-meta">
+                    <h2 class="slide-title">Nature Date</h2>
+                    <p class="slide-date">November 1, 2025 · ⛰️Tallulah Gorge</p>
+                  </div>
+                  <p class="slide-note">
+                    Next time you get tired on a hike, let me carry you.
+                    The picnic was so cute, right? Let's go on more nature dates and become nomads and live in the
+                    mountains. Just kidding
+                  </p>
+                </div>
+              </div>
+            </section>
+
+            <!-- SLIDE 23 -->
+
+            <section class="slide slide-photobooth">
+              <div class="polaroid" style="transform: rotate(-0.9deg);">
+                <div class="polaroid-inner">
+                  <div class="photo-frame">
+                    <img src="/Users/dan/1YEAR/focuseddaniel.jpg" alt="me focused" style="object-position: 70% 50%;" />
+                  </div>
+                  <div class="slide-meta">
+                    <h2 class="slide-title">Me rn making this website ^</h2>
+                    <p class="slide-date">November 23, 2025 · My Heart😉</p>
+                  </div>
+                  <p class="slide-note">
+                    Anyways, that's all the slides I have for now. I had to limit myself, otherwise there would be at
+                    least 100 slides. But let's keeping going on more dates so we I can add even more slides :).
+                    I hope you enjoyed this little scrapbook of just a few of our many memories together!
+                    Thank you for always being there for me, and being the most supportive, caring, funny, and pretty
+                    girlfriend ever.
+                    Happy one year, I love you so much. 我爱你!
+                    - Daniel <3 </p>
+                </div>
+              </div>
+            </section>
+
+
+
+
+            <!-- Add more slides by copying the <section class="slide"> block -->
+
+            <div class="controls">
+              <div class="nav-buttons">
+                <button class="nav-btn" id="prevBtn">
+                  ← Previous
+                </button>
+                <button class="nav-btn" id="nextBtn">
+                  Next →
+                </button>
+              </div>
+              <div class="slide-indicator" id="slideIndicator">
+                Slide 1 of 3
+              </div>
+            </div>
+
+            <div class="dots" id="dotsContainer">
+              <!-- Dots will be created by JS -->
+            </div>
+
+          </div>
+        </main>
+      </section>
+
+      <!-- QUIZ SECTION -->
+      <section id="quizSection" class="page-section">
+        <div class="quiz-wrapper">
+          <div class="quiz-card">
+            <h2 class="quiz-title">Mini Us Quiz</h2>
+            <p class="quiz-subtitle">
+              If you get 100%, you get a reward :)
+            </p>
+
+            <div class="quiz-question" data-correct="b">
+              <div class="quiz-question-title">1. Where did we go on our very first date?</div>
+              <div class="quiz-options">
+                <label>
+                  <input type="radio" name="q1" value="a" />
+                  a) Atlanta Botanical Gardens
+                </label>
+                <label>
+                  <input type="radio" name="q1" value="b" />
+                  b) High Museum of Art
+                </label>
+                <label>
+                  <input type="radio" name="q1" value="c" />
+                  c) Dave and Buster's
+                </label>
+              </div>
+            </div>
+
+            <div class="quiz-question" data-correct="a">
+              <div class="quiz-question-title">
+                2. Who said "I love you" first?
+              </div>
+              <div class="quiz-options">
+                <label>
+                  <input type="radio" name="q2" value="a" />
+                  a) Daniel
+                </label>
+                <label>
+                  <input type="radio" name="q2" value="b" />
+                  b) Bliss
+                </label>
+              </div>
+            </div>
+
+            <div class="quiz-question" data-correct="b">
+              <div class="quiz-question-title">
+                3. On what day was our first kiss?
+              </div>
+              <div class="quiz-options">
+                <label>
+                  <input type="radio" name="q3" value="a" />
+                  a) Dec. 16, 2024
+                </label>
+                <label>
+                  <input type="radio" name="q3" value="b" />
+                  b) Dec. 17, 2024
+                </label>
+                <label>
+                  <input type="radio" name="q3" value="c" />
+                  c) Dec. 18, 2024
+                </label>
+              </div>
+            </div>
+
+            <div class="quiz-question" data-correct="c">
+              <div class="quiz-question-title">
+                4. What are the two animals on our spotify playlist?
+              </div>
+              <div class="quiz-options">
+                <label>
+                  <input type="radio" name="q4" value="a" />
+                  a) Alpaca and Turtle
+                </label>
+                <label>
+                  <input type="radio" name="q4" value="b" />
+                  b) Badger and Alpaca
+                </label>
+                <label>
+                  <input type="radio" name="q4" value="c" />
+                  c) Panda and Alpaca
+                </label>
+              </div>
+            </div>
+
+            <div class="quiz-question" data-correct="c">
+              <div class="quiz-question-title">
+                5. In Savannah, what was the name of the Island we went to?
+              </div>
+              <div class="quiz-options">
+                <label>
+                  <input type="radio" name="q5" value="a" />
+                  a) Ossie Island
+                </label>
+                <label>
+                  <input type="radio" name="q5" value="b" />
+                  b) Poby Island
+                </label>
+                <label>
+                  <input type="radio" name="q5" value="c" />
+                  c) Tybee island
+                </label>
+              </div>
+            </div>
+
+            <div class="quiz-question" data-correct="a">
+              <div class="quiz-question-title">
+                6. What shirt did I wear on our very first date?
+              </div>
+              <div class="quiz-options">
+                <label>
+                  <input type="radio" name="q6" value="a" />
+                  a) Green shirt with checkered pattern
+                </label>
+                <label>
+                  <input type="radio" name="q6" value="b" />
+                  b) Green shirt with stripes
+                </label>
+                <label>
+                  <input type="radio" name="q6" value="c" />
+                  c) Navy shirt with checkered pattern
+                </label>
+                <label>
+                  <input type="radio" name="q6" value="d" />
+                  d) Navy shirt with stripes
+                </label>
+              </div>
+            </div>
+
+            <div class="quiz-question" data-correct="b">
+              <div class="quiz-question-title">
+                7. In the dumplings that we made together, what spices did we use? (My recipe)
+              </div>
+              <div class="quiz-options">
+                <label>
+                  <input type="radio" name="q7" value="a" />
+                  a) Star anise and cinnamon
+                </label>
+                <label>
+                  <input type="radio" name="q7" value="b" />
+                  b) Star anise and peppercorn
+                </label>
+                <label>
+                  <input type="radio" name="q7" value="c" />
+                  c) Cinnamon and peppercorn
+                </label>
+              </div>
+            </div>
+
+            <div class="quiz-question" data-correct="a">
+              <div class="quiz-question-title">
+                8. In Sydney, what was the name of the tea place I frequently went to? (Hint: I wanted to get us
+                matching keychains from there, but I ran out of time)
+              </div>
+              <div class="quiz-options">
+                <label>
+                  <input type="radio" name="q8" value="a" />
+                  a) machi machi
+                </label>
+                <label>
+                  <input type="radio" name="q8" value="b" />
+                  b) Molly Tea
+                </label>
+                <label>
+                  <input type="radio" name="q8" value="c" />
+                  c) Heytea
+                </label>
+              </div>
+            </div>
+
+            <div class="quiz-question" data-correct="c">
+              <div class="quiz-question-title">
+                9. What was the name of the park in Augusta that we walked in? This was also my favorite place to run.
+              </div>
+              <div class="quiz-options">
+                <label>
+                  <input type="radio" name="q9" value="a" />
+                  a) SPR Park
+                </label>
+                <label>
+                  <input type="radio" name="q9" value="b" />
+                  b) RSP Park
+                </label>
+                <label>
+                  <input type="radio" name="q9" value="c" />
+                  c) SRP Park
+                </label>
+              </div>
+            </div>
+
+            <div class="quiz-question" data-correct="c">
+              <div class="quiz-question-title">
+                10. Last but not least, how much do I love you?
+              </div>
+              <div class="quiz-options">
+                <label>
+                  <input type="radio" name="q10" value="a" />
+                  a) A little
+                </label>
+                <label>
+                  <input type="radio" name="q10" value="b" />
+                  b) A lot
+                </label>
+                <label>
+                  <input type="radio" name="q10" value="c" />
+                  c) To the moon and back and then to pluto and back. And then out of the Milky Way and back. And then all the way to Australia and black. All times 1000000000.
+                </label>
+              </div>
+            </div>
+
+            <div class="quiz-actions">
+              <div class="quiz-result" id="quizResult">
+                <!-- result text goes here -->
+              </div>
+              <button class="quiz-btn" id="checkQuizBtn">Check my answers</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- GALLERY SECTION -->
+      <section id="gallerySection" class="page-section">
+        <div class="gallery-wrapper">
+          <div class="gallery-intro">
+            <h2 class="gallery-intro-title">Little Gallery of Us</h2>
+            <p class="gallery-intro-text">
+              Just some of my favorite snapshots of us being us. 📸
+            </p>
+          </div>
+
+          <div class="gallery-grid">
+            <!-- Replace src & captions with your own photos -->
+            <figure class="gallery-item">
+              <div class="gallery-photo-frame">
+                <img src="images/gallery1.jpg" alt="Smiling together" />
+              </div>
+              <figcaption class="gallery-caption">
+                Your laugh here is my favorite sound.
+              </figcaption>
+            </figure>
+
+            <figure class="gallery-item">
+              <div class="gallery-photo-frame">
+                <img src="images/gallery2.jpg" alt="Goofy selfie" />
+              </div>
+              <figcaption class="gallery-caption">
+                Peak chaos energy, 10/10 would repeat.
+              </figcaption>
+            </figure>
+
+            <figure class="gallery-item">
+              <div class="gallery-photo-frame">
+                <img src="images/gallery3.jpg" alt="Holding hands" />
+              </div>
+              <figcaption class="gallery-caption">
+                I still get butterflies when you hold my hand.
+              </figcaption>
+            </figure>
+
+            <figure class="gallery-item">
+              <div class="gallery-photo-frame">
+                <img src="images/gallery4.jpg" alt="Travel photo" />
+              </div>
+              <figcaption class="gallery-caption">
+                Anywhere with you feels a little like home.
+              </figcaption>
+            </figure>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      For: Bliss <span class="heart">♥</span> From: Daniel
+    </footer>
+  </div>
+
+  <!-- BACKGROUND MUSIC + TOGGLE BUTTON -->
+  <!-- Change src below to your actual song file path -->
+  <audio id="bgMusic" preload="auto"></audio>
+
+  <!-- Music button using your PNG icon -->
+  <button id="musicToggle" class="music-toggle muted" hidden aria-label="Toggle music">
+    <span class="music-icon">♪</span>
+    <span class="music-muted-indicator">×</span>
+  </button>
+
+  <script>
+    // ------- SLIDESHOW LOGIC --------
+    const slides = Array.from(document.querySelectorAll(".slide"));
+    const prevBtn = document.getElementById("prevBtn");
+    const nextBtn = document.getElementById("nextBtn");
+    const slideIndicator = document.getElementById("slideIndicator");
+    const dotsContainer = document.getElementById("dotsContainer");
+    const MAX_VISIBLE_DOTS = 15;
+
+    function updateDotWindow() {
+      const total = dots.length;
+
+      // If there are 8 or fewer slides, just show them all
+      if (total <= MAX_VISIBLE_DOTS) {
+        dots.forEach(dot => {
+          dot.style.display = "inline-block";
+        });
+        return;
+      }
+
+      // Choose a window of 8 that always includes currentIndex
+      let windowStart = currentIndex - Math.floor(MAX_VISIBLE_DOTS / 2);
+
+      if (windowStart < 0) windowStart = 0;
+      if (windowStart + MAX_VISIBLE_DOTS > total) {
+        windowStart = total - MAX_VISIBLE_DOTS;
+      }
+
+      dots.forEach((dot, i) => {
+        if (i >= windowStart && i < windowStart + MAX_VISIBLE_DOTS) {
+          dot.style.display = "inline-block";
+        } else {
+          dot.style.display = "none";
+        }
+      });
+    }
+
+
+    let currentIndex = 0;
+
+    // Create dots based on number of slides
+    slides.forEach((_, index) => {
+      const dot = document.createElement("button");
+      dot.classList.add("dot");
+      if (index === 0) dot.classList.add("active");
+      dot.setAttribute("data-index", index);
+      dotsContainer.appendChild(dot);
+    });
+
+    const dots = Array.from(document.querySelectorAll(".dot"));
+
+    function updateSlides(newIndex) {
+      if (newIndex < 0) {
+        newIndex = slides.length - 1;
+      } else if (newIndex >= slides.length) {
+        newIndex = 0;
+      }
+      currentIndex = newIndex;
+
+      slides.forEach((slide, i) => {
+        slide.classList.toggle("active", i === currentIndex);
+      });
+
+      dots.forEach((dot, i) => {
+        dot.classList.toggle("active", i === currentIndex);
+      });
+
+      slideIndicator.textContent = `Slide ${currentIndex + 1} of ${slides.length}`;
+      updateDotWindow();
+    }
+
+    prevBtn.addEventListener("click", () => {
+      updateSlides(currentIndex - 1);
+    });
+
+    nextBtn.addEventListener("click", () => {
+      updateSlides(currentIndex + 1);
+    });
+
+    dots.forEach(dot => {
+      dot.addEventListener("click", () => {
+        const idx = parseInt(dot.getAttribute("data-index"), 10);
+        updateSlides(idx);
+      });
+    });
+
+    document.addEventListener("keydown", (e) => {
+      // Only allow arrow navigation once the scrapbook is visible AND scrapbook tab is active
+      if (baseContent.hidden) return;
+      if (!scrapbookSection.classList.contains("active-section")) return;
+
+      if (e.key === "ArrowLeft") {
+        updateSlides(currentIndex - 1);
+      } else if (e.key === "ArrowRight") {
+        updateSlides(currentIndex + 1);
+      }
+    });
+
+    // ------- PASSWORD LOGIC --------
+    const CORRECT_PASSWORD = "11/23/25"; // <--- change this to whatever you want
+
+    const passwordOverlay = document.getElementById("passwordOverlay");
+    const baseContent = document.getElementById("baseContent");
+    const passwordForm = document.getElementById("passwordForm");
+    const passwordInput = document.getElementById("passwordInput");
+    const showPasswordCheckbox = document.getElementById("showPassword");
+    const pwError = document.getElementById("pwError");
+    const pwCancelBtn = document.getElementById("pwCancelBtn");
+
+
+    window.addEventListener("load", () => {
+      passwordInput.focus();
+    });
+
+    showPasswordCheckbox.addEventListener("change", (e) => {
+      passwordInput.type = e.target.checked ? "text" : "password";
+    });
+
+    pwCancelBtn.addEventListener("click", () => {
+      passwordInput.value = "";
+      pwError.classList.remove("visible");
+      passwordInput.blur();
+    });
+
+    passwordForm.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const entered = passwordInput.value.trim();
+
+      if (entered === CORRECT_PASSWORD) {
+        updateSlides(0);
+        updateDotWindow();
+        pwError.classList.remove("visible");
+        baseContent.hidden = false;
+
+        // show music button now that the page is unlocked
+        musicToggle.hidden = false;
+
+        // Fade out overlay
+        passwordOverlay.style.transition = "opacity 0.3s ease";
+        passwordOverlay.style.opacity = "0";
+        setTimeout(() => {
+          passwordOverlay.style.display = "none";
+        }, 300);
+      } else {
+        pwError.textContent = "our special day!! try again :)";
+        pwError.classList.add("visible");
+        passwordInput.value = "";
+        passwordInput.focus();
+      }
+    });
+
+    // ------- TABS / SECTIONS LOGIC --------
+    const tabButtons = document.querySelectorAll(".tab-btn");
+    const pageSections = document.querySelectorAll(".page-section");
+    const scrapbookSection = document.getElementById("scrapbookSection");
+
+    tabButtons.forEach((btn) => {
+      btn.addEventListener("click", () => {
+        // 🚫 if this tab is disabled, do nothing
+        if (btn.classList.contains("tab-disabled")) return;
+
+        const targetId = btn.getAttribute("data-section");
+
+        tabButtons.forEach((b) => b.classList.remove("active-tab"));
+        btn.classList.add("active-tab");
+
+        pageSections.forEach((section) => {
+          section.classList.toggle("active-section", section.id === targetId);
+        });
+      });
+    });
+
+
+
+    // ------- QUIZ LOGIC --------
+    const checkQuizBtn = document.getElementById("checkQuizBtn");
+    const quizResult = document.getElementById("quizResult");
+
+    checkQuizBtn.addEventListener("click", () => {
+      const questions = Array.from(document.querySelectorAll(".quiz-question"));
+      let correctCount = 0;
+      let totalCount = 0;
+
+      questions.forEach((q) => {
+        const correct = q.getAttribute("data-correct");
+        if (correct) {
+          totalCount += 1;
+          const name = "q" + totalCount;
+          const selected = q.querySelector(`input[name="${name}"]:checked`);
+          if (selected && selected.value === correct) {
+            correctCount += 1;
+          }
+        }
+      });
+      if (correctCount < totalCount) {
+        quizResult.innerHTML = `
+        <span>${correctCount} / ${totalCount}</span>
+        &nbsp;CLOSE BUT NOT QUITE
+      `;
+      } else {
+        quizResult.innerHTML = `
+        <span>${correctCount} / ${totalCount}</span>
+        &nbsp; ASDFKJJSDAKLF YOU GOT 100!
+      `;
+      }
+    });
+
+    // -------- MUSIC ELEMENTS / PLAYLIST --------
+    const bgMusic = document.getElementById("bgMusic");
+    const musicToggle = document.getElementById("musicToggle");
+    let musicPlaying = false;
+
+    // 3:48 = 3 * 60 + 48 = 228 seconds
+    // 👉 Update these paths to your actual files
+    const tracks = [
+      { src: "/Users/dan/1YEAR/summernight.mp3", end: 274 },  // song 1
+      { src: "/Users/dan/1YEAR/kissmekissme.mp3", end: 228 }  // song 2
+    ];
+
+    let currentTrackIndex = 0;
+
+    // Load whichever track currentTrackIndex points to
+    function loadCurrentTrack() {
+      const track = tracks[currentTrackIndex];
+      bgMusic.src = track.src;
+      bgMusic.currentTime = 0;
+    }
+
+    // Start playing (used when you unmute)
+    function startMusic() {
+      if (!bgMusic.src) {
+        loadCurrentTrack();
+      }
+
+      bgMusic
+        .play()
+        .then(() => {
+          musicPlaying = true;
+          musicToggle.classList.remove("muted"); // remove red X
+        })
+        .catch(() => {
+          // ignore autoplay issues
+        });
+    }
+
+    // Stop playing (used when you mute)
+    function stopMusic() {
+      bgMusic.pause();
+      musicPlaying = false;
+      musicToggle.classList.add("muted"); // show red X
+    }
+
+    // When the current track reaches its "end" time, go to the next one
+    bgMusic.addEventListener("timeupdate", () => {
+      const track = tracks[currentTrackIndex];
+      if (!track) return;
+
+      if (bgMusic.currentTime >= track.end) {
+        // advance to next track (wrap around)
+        currentTrackIndex = (currentTrackIndex + 1) % tracks.length;
+        loadCurrentTrack();
+
+        if (musicPlaying) {
+          bgMusic.play().catch(() => { });
+        }
+      }
+    });
+
+    // Toggle button logic
+    musicToggle.addEventListener("click", () => {
+      if (musicPlaying) {
+        stopMusic();
+      } else {
+        startMusic();
+      }
+    });
+
+  </script>
+</body>
+
+</html>
